@@ -1,0 +1,106 @@
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using FakeXieCheng.Database;
+using FakeXieCheng.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Serialization;
+
+namespace FakeXiecheng
+{
+  public class Startup
+  {
+    public IConfiguration Configuration { get; }
+
+    public Startup(IConfiguration configuration)
+    {
+      Configuration = configuration;
+    }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+    public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddControllers(setupAction =>
+      {
+        setupAction.ReturnHttpNotAcceptable = true; // 开启请求Header 请求类型处理
+        // setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+      })
+        .AddNewtonsoftJson(setupAction =>
+        {
+          setupAction.SerializerSettings.ContractResolver =
+            new CamelCasePropertyNamesContractResolver();
+        })
+        .AddXmlDataContractSerializerFormatters() // 支持返回 xml 格式
+        .ConfigureApiBehaviorOptions(setupAction =>
+        {
+          setupAction.InvalidModelStateResponseFactory = context =>
+          {
+            var problemDetail = new ValidationProblemDetails(context.ModelState)
+            {
+              Type = "无所谓",
+              Title = "数据验证失败",
+              Status = StatusCodes.Status422UnprocessableEntity,
+              Detail = "请看详细说明",
+              Instance = context.HttpContext.Request.Path
+            };
+            problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier); // 增加追踪 id
+            return new UnprocessableEntityObjectResult(problemDetail)
+            {
+              ContentTypes = {"application/problem+json"} // 配置响应的媒体类型，方便前段解析
+            };
+          };
+        
+        }) // 控制API controller 行为的服务：非法模型状态响应工厂
+        ; 
+
+      // 每次发起请求时创建全新的数据仓库，请求结束时自动注销仓库
+      // 不同请求之间的数据仓库完全独立，互不影响
+      services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
+      /*
+       *  有且仅创建一个数据仓库，之后系统使用都会使用同一个示例。
+       *  优点： 简单易用便于管理内存占用少效率高
+       *  缺点：处理每个独立的请求时共用通道会造成数据污染
+       */
+      //services.AddSingleton
+      /*
+       *  介于 transient 和 singleton 之间，同时引入事务管理 transaction概念，
+       * 将一系列的请求/操作整合起来，放在同一个事务中，事务有且仅创建一个数据仓库
+       *  事务结束后系统自动注销仓库
+       */
+      //services.AddScoped
+      services.AddDbContext<AppDbContext>(options =>
+      {
+        // options.UseSqlServer("server=localhost; Database=FakeXieChengDb; User Id=sa; Password=masterQu;");
+        // options.UseSqlServer(Configuration["DbContext:ConnectionString"]);
+        var connectionString = Configuration["DbContext:MySQLConnectionString"];
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+      });
+
+      // 扫描 profile 文件
+      services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
+
+      app.UseRouting();
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllers();
+      });
+    }
+  }
+}
