@@ -6,6 +6,7 @@ using AutoMapper;
 using FakeXieCheng.API.Dtos;
 using FakeXieCheng.API.Helper;
 using FakeXieCheng.API.ResourceParameters;
+using FakeXieCheng.API.Services;
 using FakeXieCheng.Models;
 using Microsoft.AspNetCore.Mvc;
 using FakeXieCheng.Services;
@@ -56,7 +57,7 @@ namespace FakeXieCheng.Controllers
         {
             var touristRouteModel = _mapper.Map<TouristRoute>(touristRouteForCreationDto);
             _touristRouteRepository.AddTouristRoute(touristRouteModel);
-            _touristRouteRepository.Save();
+            _touristRouteRepository.SaveAsync();
             var touristRouteToReturn = _mapper.Map<TouristRouteDto>(touristRouteModel);
             return CreatedAtRoute("GetTouristRouteById", new {touristRouteId = touristRouteToReturn.Id},
                 touristRouteToReturn);
@@ -74,7 +75,7 @@ namespace FakeXieCheng.Controllers
             // 2. 更新 dto
             // 3. 映射 model
             _mapper.Map(touristRouteForUpdateDto, touristRouteFromRepo);
-            _touristRouteRepository.Save();
+            await _touristRouteRepository.SaveAsync();
             return NoContent();
         }
 
@@ -94,7 +95,7 @@ namespace FakeXieCheng.Controllers
             patchDocument.ApplyTo(touristRouteToPatch, ModelState);
             if (!TryValidateModel(touristRouteToPatch)) return ValidationProblem(ModelState);
             _mapper.Map(touristRouteToPatch, touristRouteFromRepo);
-            _touristRouteRepository.Save();
+            await _touristRouteRepository.SaveAsync();
             return NoContent();
         }
 
@@ -106,7 +107,7 @@ namespace FakeXieCheng.Controllers
             if (!await _touristRouteRepository.TouristRouteExistsAsync(touristRouteId)) return NotFound("旅游路线找不到");
             var touristRoute = await _touristRouteRepository.GetTouristRouteAsync(touristRouteId);
             _touristRouteRepository.DeleteTouristRoute(touristRoute);
-            _touristRouteRepository.Save();
+            await _touristRouteRepository.SaveAsync();
             return NoContent();
         }
 
@@ -119,7 +120,7 @@ namespace FakeXieCheng.Controllers
             if (touristIds == null) return BadRequest();
             var touristRoutesFromRepo = await _touristRouteRepository.GetTouristRoutesByIdListAsync(touristIds);
             _touristRouteRepository.DeleteTouristRoutes(touristRoutesFromRepo);
-            _touristRouteRepository.Save();
+            await _touristRouteRepository.SaveAsync();
             return NoContent();
         }
     }

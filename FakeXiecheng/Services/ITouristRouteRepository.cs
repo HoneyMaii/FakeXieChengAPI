@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FakeXieCheng.API.Models;
 using FakeXieCheng.Models;
 
-namespace FakeXieCheng.Services
+namespace FakeXieCheng.API.Services
 {
   public interface ITouristRouteRepository
   {
@@ -18,6 +19,13 @@ namespace FakeXieCheng.Services
     void DeleteTouristRoute(TouristRoute touristRoute);
     void DeleteTouristRoutes(IEnumerable<TouristRoute> touristRoutes);
     void DeleteTouristRoutePicture(TouristRoutePicture touristRoutePicture);
-    bool Save();
+    Task<ShoppingCart> GetShoppingCartByUserId(string userId);
+    Task CreateShoppingCart(ShoppingCart shoppingCart);
+    Task AddShoppingCartItem(LineItem lineItem);
+    Task<LineItem> GetShoppingCartItemByItemId(int lineItemId);
+    void DeleteShoppingCartItem(LineItem lineItem);
+    Task<IEnumerable<LineItem>> GetShoppingCartItemsByIdListAsync(IEnumerable<int> ids);
+    void DeleteSHoppingCartItems(IEnumerable<LineItem> lineItems);
+    Task<bool> SaveAsync();
   }
 }

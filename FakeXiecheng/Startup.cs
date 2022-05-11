@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using FakeXieCheng.API.Database;
 using FakeXieCheng.API.Models;
+using FakeXieCheng.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

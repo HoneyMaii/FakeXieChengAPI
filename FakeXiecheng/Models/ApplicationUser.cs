@@ -6,7 +6,7 @@ namespace FakeXieCheng.API.Models
     public class ApplicationUser:IdentityUser
     {
         public string Address { get; set; }
-        // shoppingCart
+        public ShoppingCart ShoppingCart { get; set; }
         // orders
         public virtual ICollection<IdentityUserRole<string>> UserRoles { get; set; }
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }

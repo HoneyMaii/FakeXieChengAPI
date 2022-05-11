@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeXieCheng.API.Dtos;
+using FakeXieCheng.API.Services;
 using FakeXieCheng.Models;
 using FakeXieCheng.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +50,7 @@ namespace FakeXieCheng.API.Controllers
             if (!await _touristRouteRepository.TouristRouteExistsAsync(touristRouteId)) return NotFound("旅游路线不存在");
             var pictureModel = _mapper.Map<TouristRoutePicture>(touristRoutePictureForCreationDto);
             _touristRouteRepository.AddTouristRoutePicture(touristRouteId, pictureModel);
-            _touristRouteRepository.Save();
+            await _touristRouteRepository.SaveAsync();
             var pictureToReturn = _mapper.Map<TouristRoutePictureDto>(pictureModel);
             return CreatedAtRoute("GetPicture",
                 new
@@ -67,7 +68,7 @@ namespace FakeXieCheng.API.Controllers
             var picture = await _touristRouteRepository.GetPictureAsync(pictureId);
             if (picture == null) return NotFound("图片不存在");
             _touristRouteRepository.DeleteTouristRoutePicture(picture);
-            _touristRouteRepository.Save();
+            await _touristRouteRepository.SaveAsync();
             return NoContent();
         }
     }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FakeXieCheng.API.Database;
 using FakeXieCheng.API.Dtos;
+using FakeXieCheng.API.Models;
+using FakeXieCheng.API.Services;
 using FakeXieCheng.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,9 +100,48 @@ namespace FakeXieCheng.Services
       _context.TouristRoutePictures.Remove(touristRoutePicture);
     }
 
-    public bool Save()
+    public async Task<ShoppingCart> GetShoppingCartByUserId(string userId)
     {
-      return _context.SaveChanges() > 0;
+      return await _context.ShoppingCarts
+        .Include(s => s.User)
+        .Include(s => s.ShoppingCartItems).ThenInclude(li => li.TouristRoute)
+        .Where(s => s.UserId == userId)
+        .FirstOrDefaultAsync();
+    }
+
+    public async Task CreateShoppingCart(ShoppingCart shoppingCart)
+    {
+      await _context.ShoppingCarts.AddAsync(shoppingCart);
+    }
+
+    public async Task AddShoppingCartItem(LineItem lineItem)
+    {
+      await _context.LineItems.AddAsync(lineItem);
+    }
+
+    public async Task<LineItem> GetShoppingCartItemByItemId(int lineItemId)
+    {
+      return await _context.LineItems.Where(li => li.Id == lineItemId).FirstOrDefaultAsync();
+    }
+
+    public async void DeleteShoppingCartItem(LineItem lineItem)
+    {
+      _context.LineItems.Remove(lineItem);
+    }
+
+    public async Task<IEnumerable<LineItem>> GetShoppingCartItemsByIdListAsync(IEnumerable<int> ids)
+    {
+      return await _context.LineItems.Where(li => ids.Contains(li.Id)).ToListAsync();
+    }
+
+    public void DeleteSHoppingCartItems(IEnumerable<LineItem> lineItems)
+    {
+      _context.LineItems.RemoveRange(lineItems);
+    }
+
+    public async Task<bool> SaveAsync()
+    {
+      return await _context.SaveChangesAsync() > 0;
     }
   }
 }
