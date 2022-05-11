@@ -1,106 +1,132 @@
 using System;
+using System.Text;
+using FakeXieCheng.API.Database;
+using FakeXieCheng.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FakeXieCheng.Database;
 using FakeXieCheng.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 
 namespace FakeXiecheng
 {
-  public class Startup
-  {
-    public IConfiguration Configuration { get; }
-
-    public Startup(IConfiguration configuration)
+    public class Startup
     {
-      Configuration = configuration;
-    }
+        public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
-    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddControllers(setupAction =>
-      {
-        setupAction.ReturnHttpNotAcceptable = true; // ¿ªÆôÇëÇóHeader ÇëÇóÀàĞÍ´¦Àí
-        // setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
-      })
-        .AddNewtonsoftJson(setupAction =>
+        public Startup(IConfiguration configuration)
         {
-          setupAction.SerializerSettings.ContractResolver =
-            new CamelCasePropertyNamesContractResolver();
-        })
-        .AddXmlDataContractSerializerFormatters() // Ö§³Ö·µ»Ø xml ¸ñÊ½
-        .ConfigureApiBehaviorOptions(setupAction =>
+            Configuration = configuration;
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
         {
-          setupAction.InvalidModelStateResponseFactory = context =>
-          {
-            var problemDetail = new ValidationProblemDetails(context.ModelState)
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>(); // è¿æ¥ä¸Šä¸‹æ–‡å…³ç³»å¯¹è±¡
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    var secretByte = Encoding.UTF8.GetBytes(Configuration["Authentication:SecretKey"]);
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true, // éªŒè¯tokenå‘å¸ƒè€…
+                        ValidIssuer = Configuration["Authentication:Issuer"],
+
+                        ValidateAudience = true, // éªŒè¯ token æŒæœ‰è€…
+                        ValidAudience = Configuration["Authentication:Audience"],
+
+                        ValidateLifetime = true, // éªŒè¯ token æ˜¯å¦è¿‡æœŸ
+                        IssuerSigningKey = new SymmetricSecurityKey(secretByte) // token ç§é’¥æ–‡ä»¶è¿›å…¥å¹¶åŠ å¯†
+                    };
+                });
+            services.AddControllers(setupAction =>
+                {
+                    setupAction.ReturnHttpNotAcceptable = true; // å¼€å¯è¯·æ±‚Header è¯·æ±‚ç±»å‹å¤„ç†
+                    // setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                })
+                .AddNewtonsoftJson(setupAction =>
+                {
+                    setupAction.SerializerSettings.ContractResolver =
+                        new CamelCasePropertyNamesContractResolver();
+                })
+                .AddXmlDataContractSerializerFormatters() // æ”¯æŒè¿”å› xml æ ¼å¼
+                .ConfigureApiBehaviorOptions(setupAction =>
+                {
+                    setupAction.InvalidModelStateResponseFactory = context =>
+                    {
+                        var problemDetail = new ValidationProblemDetails(context.ModelState)
+                        {
+                            Type = "æ— æ‰€è°“",
+                            Title = "æ•°æ®éªŒè¯å¤±è´¥",
+                            Status = StatusCodes.Status422UnprocessableEntity,
+                            Detail = "è¯·çœ‹è¯¦ç»†è¯´æ˜",
+                            Instance = context.HttpContext.Request.Path
+                        };
+                        problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier); // å¢åŠ è¿½è¸ª id
+                        return new UnprocessableEntityObjectResult(problemDetail)
+                        {
+                            ContentTypes = {"application/problem+json"} // é…ç½®å“åº”çš„åª’ä½“ç±»å‹ï¼Œæ–¹ä¾¿å‰æ®µè§£æ
+                        };
+                    };
+                }) // æ§åˆ¶API controller è¡Œä¸ºçš„æœåŠ¡ï¼šéæ³•æ¨¡å‹çŠ¶æ€å“åº”å·¥å‚
+                ;
+
+            // æ¯æ¬¡å‘èµ·è¯·æ±‚æ—¶åˆ›å»ºå…¨æ–°çš„æ•°æ®ä»“åº“ï¼Œè¯·æ±‚ç»“æŸæ—¶è‡ªåŠ¨æ³¨é”€ä»“åº“
+            // ä¸åŒè¯·æ±‚ä¹‹é—´çš„æ•°æ®ä»“åº“å®Œå…¨ç‹¬ç«‹ï¼Œäº’ä¸å½±å“
+            services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
+            /*
+             *  æœ‰ä¸”ä»…åˆ›å»ºä¸€ä¸ªæ•°æ®ä»“åº“ï¼Œä¹‹åç³»ç»Ÿä½¿ç”¨éƒ½ä¼šä½¿ç”¨åŒä¸€ä¸ªç¤ºä¾‹ã€‚
+             *  ä¼˜ç‚¹ï¼š ç®€å•æ˜“ç”¨ä¾¿äºç®¡ç†å†…å­˜å ç”¨å°‘æ•ˆç‡é«˜
+             *  ç¼ºç‚¹ï¼šå¤„ç†æ¯ä¸ªç‹¬ç«‹çš„è¯·æ±‚æ—¶å…±ç”¨é€šé“ä¼šé€ æˆæ•°æ®æ±¡æŸ“
+             */
+            //services.AddSingleton
+            /*
+             *  ä»‹äº transient å’Œ singleton ä¹‹é—´ï¼ŒåŒæ—¶å¼•å…¥äº‹åŠ¡ç®¡ç† transactionæ¦‚å¿µï¼Œ
+             * å°†ä¸€ç³»åˆ—çš„è¯·æ±‚/æ“ä½œæ•´åˆèµ·æ¥ï¼Œæ”¾åœ¨åŒä¸€ä¸ªäº‹åŠ¡ä¸­ï¼Œäº‹åŠ¡æœ‰ä¸”ä»…åˆ›å»ºä¸€ä¸ªæ•°æ®ä»“åº“
+             *  äº‹åŠ¡ç»“æŸåç³»ç»Ÿè‡ªåŠ¨æ³¨é”€ä»“åº“
+             */
+            //services.AddScoped
+            services.AddDbContext<AppDbContext>(options =>
             {
-              Type = "ÎŞËùÎ½",
-              Title = "Êı¾İÑéÖ¤Ê§°Ü",
-              Status = StatusCodes.Status422UnprocessableEntity,
-              Detail = "Çë¿´ÏêÏ¸ËµÃ÷",
-              Instance = context.HttpContext.Request.Path
-            };
-            problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier); // Ôö¼Ó×·×Ù id
-            return new UnprocessableEntityObjectResult(problemDetail)
+                // options.UseSqlServer("server=localhost; Database=FakeXieChengDb; User Id=sa; Password=masterQu;");
+                // options.UseSqlServer(Configuration["DbContext:ConnectionString"]);
+                var connectionString = Configuration["DbContext:MySQLConnectionString"];
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            });
+
+            // æ‰«æ profile æ–‡ä»¶
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
             {
-              ContentTypes = {"application/problem+json"} // ÅäÖÃÏìÓ¦µÄÃ½ÌåÀàĞÍ£¬·½±ãÇ°¶Î½âÎö
-            };
-          };
-        
-        }) // ¿ØÖÆAPI controller ĞĞÎªµÄ·şÎñ£º·Ç·¨Ä£ĞÍ×´Ì¬ÏìÓ¦¹¤³§
-        ; 
+                app.UseDeveloperExceptionPage();
+            }
 
-      // Ã¿´Î·¢ÆğÇëÇóÊ±´´½¨È«ĞÂµÄÊı¾İ²Ö¿â£¬ÇëÇó½áÊøÊ±×Ô¶¯×¢Ïú²Ö¿â
-      // ²»Í¬ÇëÇóÖ®¼äµÄÊı¾İ²Ö¿âÍêÈ«¶ÀÁ¢£¬»¥²»Ó°Ïì
-      services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
-      /*
-       *  ÓĞÇÒ½ö´´½¨Ò»¸öÊı¾İ²Ö¿â£¬Ö®ºóÏµÍ³Ê¹ÓÃ¶¼»áÊ¹ÓÃÍ¬Ò»¸öÊ¾Àı¡£
-       *  ÓÅµã£º ¼òµ¥Ò×ÓÃ±ãÓÚ¹ÜÀíÄÚ´æÕ¼ÓÃÉÙĞ§ÂÊ¸ß
-       *  È±µã£º´¦ÀíÃ¿¸ö¶ÀÁ¢µÄÇëÇóÊ±¹²ÓÃÍ¨µÀ»áÔì³ÉÊı¾İÎÛÈ¾
-       */
-      //services.AddSingleton
-      /*
-       *  ½éÓÚ transient ºÍ singleton Ö®¼ä£¬Í¬Ê±ÒıÈëÊÂÎñ¹ÜÀí transaction¸ÅÄî£¬
-       * ½«Ò»ÏµÁĞµÄÇëÇó/²Ù×÷ÕûºÏÆğÀ´£¬·ÅÔÚÍ¬Ò»¸öÊÂÎñÖĞ£¬ÊÂÎñÓĞÇÒ½ö´´½¨Ò»¸öÊı¾İ²Ö¿â
-       *  ÊÂÎñ½áÊøºóÏµÍ³×Ô¶¯×¢Ïú²Ö¿â
-       */
-      //services.AddScoped
-      services.AddDbContext<AppDbContext>(options =>
-      {
-        // options.UseSqlServer("server=localhost; Database=FakeXieChengDb; User Id=sa; Password=masterQu;");
-        // options.UseSqlServer(Configuration["DbContext:ConnectionString"]);
-        var connectionString = Configuration["DbContext:MySQLConnectionString"];
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-      });
+            // ä½ åœ¨å“ª
+            app.UseRouting();
 
-      // É¨Ãè profile ÎÄ¼ş
-      services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            // ä½ æ˜¯è°
+            app.UseAuthentication();
+
+            // ä½ å¯ä»¥å¹²ä»€ä¹ˆï¼Ÿæœ‰ä»€ä¹ˆæƒé™ï¼Ÿ
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
     }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
-
-      app.UseRouting();
-
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllers();
-      });
-    }
-  }
 }

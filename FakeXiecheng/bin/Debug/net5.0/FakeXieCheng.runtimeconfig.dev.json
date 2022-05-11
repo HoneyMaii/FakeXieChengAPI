@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\EricQu\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\EricQu\\.nuget\\packages"
-    ]
-  }
-}
