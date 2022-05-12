@@ -79,6 +79,10 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[5.0.4, )"
+            },
+            "stateless": {
+              "target": "Package",
+              "version": "[5.11.0, )"
             }
           },
           "imports": [

@@ -1039,6 +1039,15 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "stateless/5.11.0": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/stateless.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/stateless.dll": {}
+        }
+      },
       "System.Collections/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -3952,6 +3961,30 @@
         "lib/netstandard1.0/_._",
         "runtime.native.system.4.3.0.nupkg.sha512",
         "runtime.native.system.nuspec"
+      ]
+    },
+    "stateless/5.11.0": {
+      "sha512": "5XXmdEQBOpgE90vqxfZH0ekdqfGB6xLe0Uyb7EyHr/fgv/zkZtDcru4KxRvAvWxE1u4c8MOZnOnXoRfQOfFnTg==",
+      "type": "package",
+      "path": "stateless/5.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Stateless.png",
+        "lib/net40/stateless.dll",
+        "lib/net40/stateless.xml",
+        "lib/net45/stateless.dll",
+        "lib/net45/stateless.xml",
+        "lib/net472/stateless.dll",
+        "lib/net472/stateless.xml",
+        "lib/net5.0/stateless.dll",
+        "lib/net5.0/stateless.xml",
+        "lib/netstandard1.0/stateless.dll",
+        "lib/netstandard1.0/stateless.xml",
+        "lib/netstandard2.0/stateless.dll",
+        "lib/netstandard2.0/stateless.xml",
+        "stateless.5.11.0.nupkg.sha512",
+        "stateless.nuspec"
       ]
     },
     "System.Collections/4.3.0": {
@@ -7539,7 +7572,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.15",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.15",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
-      "Pomelo.EntityFrameworkCore.MySql >= 5.0.4"
+      "Pomelo.EntityFrameworkCore.MySql >= 5.0.4",
+      "stateless >= 5.11.0"
     ]
   },
   "packageFolders": {
@@ -7620,6 +7654,10 @@
           "Pomelo.EntityFrameworkCore.MySql": {
             "target": "Package",
             "version": "[5.0.4, )"
+          },
+          "stateless": {
+            "target": "Package",
+            "version": "[5.11.0, )"
           }
         },
         "imports": [

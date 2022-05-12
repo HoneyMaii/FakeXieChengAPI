@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+izH+ZtZGACetAiF9wQFivC1JD8HW90FSomiFefLAubQNfxNW/c4fnYfXdFX/mT1u2bm4KzDegxv+PmYm9MiEQ==",
+  "dgSpecHash": "ATNVhW3szqGr0z2n4VTsWVVGinu+QGh9wTuvVvb36qg+DZtDPFOWonfBreffJvFLN58/ugtJc3LK0tZyeSR4IQ==",
   "success": true,
   "projectFilePath": "/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/FakeXieCheng.API.csproj",
   "expectedPackageFiles": [
@@ -68,6 +68,7 @@
     "/Users/edwardchu/.nuget/packages/newtonsoft.json.bson/1.0.2/newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/pomelo.entityframeworkcore.mysql/5.0.4/pomelo.entityframeworkcore.mysql.5.0.4.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/runtime.native.system/4.3.0/runtime.native.system.4.3.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/stateless/5.11.0/stateless.5.11.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.collections/4.3.0/system.collections.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.collections.concurrent/4.3.0/system.collections.concurrent.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.collections.immutable/5.0.0/system.collections.immutable.5.0.0.nupkg.sha512",
