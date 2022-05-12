@@ -50,7 +50,7 @@ namespace FakeXieCheng.API.Controllers
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             // 2. 使用 userid 获取购物车
             var shoppingCart = await _touristRouteRepository.GetShoppingCartByUserId(userId);
-            // 3. 创建 lineitem
+            // 3. 创建 lineItem
             var touristRoute =
                 await _touristRouteRepository.GetTouristRouteAsync(addShoppingCartItemDto.TouristRouteId);
             if (touristRoute == null) return NotFound("旅游路线不存在");
@@ -91,5 +91,4 @@ namespace FakeXieCheng.API.Controllers
             return NoContent();
         }
     }
-    
 }

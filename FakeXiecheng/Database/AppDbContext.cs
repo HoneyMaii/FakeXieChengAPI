@@ -20,6 +20,7 @@ namespace FakeXieCheng.API.Database
         public DbSet<TouristRoutePicture> TouristRoutePictures { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<LineItem> LineItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         // 创建数据库表与模型映射关系时做补充说明用的
         // 可以创建自定义映射关系
