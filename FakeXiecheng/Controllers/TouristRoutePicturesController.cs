@@ -6,7 +6,6 @@ using AutoMapper;
 using FakeXieCheng.API.Dtos;
 using FakeXieCheng.API.Services;
 using FakeXieCheng.Models;
-using FakeXieCheng.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FakeXieCheng.API.Controllers

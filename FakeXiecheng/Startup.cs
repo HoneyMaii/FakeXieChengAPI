@@ -3,21 +3,21 @@ using System.Text;
 using FakeXieCheng.API.Database;
 using FakeXieCheng.API.Models;
 using FakeXieCheng.API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using FakeXieCheng.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 
-namespace FakeXiecheng
+namespace FakeXieCheng.API
 {
     public class Startup
     {
@@ -108,6 +108,11 @@ namespace FakeXiecheng
 
             // 扫描 profile 文件
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            // UrlHelper 组件
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddTransient<IPropertyMappingService, PropertyMappingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

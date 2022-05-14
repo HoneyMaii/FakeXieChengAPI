@@ -11,7 +11,7 @@ namespace FakeXieCheng.API.Profiles
     {
       CreateMap<TouristRoute, TouristRouteDto>()
         .ForMember(dest => dest.Price,
-          opt => opt.MapFrom(src => src.OriginalPrice * (decimal)(src.DiscountPresent ?? 0)))
+          opt => opt.MapFrom(src => src.OriginalPrice * (src.DiscountPresent ?? 0)))
         .ForMember(
           dest => dest.TravelDays,
           opt => opt.MapFrom(src => src.TravelDays.ToString()))
