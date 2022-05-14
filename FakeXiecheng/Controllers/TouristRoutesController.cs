@@ -122,6 +122,50 @@ namespace FakeXieCheng.API.Controllers
             return Ok(touristRoutesDto.ShapeData(parameters.Fields));
         }
 
+        private IEnumerable<LinkDto> CreateLinkForTouristRoute(
+            Guid touristRouteId,
+            string fields
+        )
+        {
+            var links = new List<LinkDto>();
+            links.Add(new LinkDto(
+                Url.Link("GetTouristRouteById", new {touristRouteId, fields}),
+                "self",
+                "GET"
+            ));
+            // 更新
+            links.Add(new LinkDto(
+                Url.Link("UpdateTouristRoute", new {touristRouteId}),
+                "update",
+                "PUT"
+            ));
+            // 局部更新
+            links.Add(new LinkDto(
+                Url.Link("PartiallyUpdateTouristRoute", new {touristRouteId}),
+                "partially_update",
+                "PATCH"
+            ));
+            // 删除
+            links.Add(new LinkDto(
+                Url.Link("DeleteTouristRoute", new {touristRouteId}),
+                "delete",
+                "DELETE"
+            ));
+            // 获取旅游路线图片
+            links.Add(new LinkDto(
+                Url.Link("GetPictureListForTouristRoute", new {touristRouteId}),
+                "get_pictures",
+                "GET"
+            ));
+            // 添加新图片
+            links.Add(new LinkDto(
+                Url.Link("CreateTouristPicture", new {touristRouteId}),
+                "create_picture",
+                "POST"
+            ));
+            return links;
+        }
+
         // api/touristRoutes/{touristRouteId}
         [HttpGet("{touristRouteId:Guid}", Name = "GetTouristRouteById")]
         [HttpHead]
@@ -132,7 +176,12 @@ namespace FakeXieCheng.API.Controllers
             var touristRouteFromRepo = await _touristRouteRepository.GetTouristRouteAsync(touristRouteId);
             if (touristRouteFromRepo == null) return NotFound($"旅游路线 {touristRouteId} 不存在");
             var touristRouteDto = _mapper.Map<TouristRouteDto>(touristRouteFromRepo);
-            return Ok(touristRouteDto.ShapeData(fields));
+            // return Ok(touristRouteDto.ShapeData(fields));
+            var linkDtos = CreateLinkForTouristRoute(touristRouteId, fields);
+            var result = touristRouteDto.ShapeData(fields)
+                as IDictionary<string,object>;
+            result.Add("links",linkDtos);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -148,7 +197,7 @@ namespace FakeXieCheng.API.Controllers
                 touristRouteToReturn);
         }
 
-        [HttpPut("{touristRouteId}")]
+        [HttpPut("{touristRouteId}", Name = "UpdateTouristRoute")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateTouristRoute([FromRoute] Guid touristRouteId,
@@ -164,7 +213,7 @@ namespace FakeXieCheng.API.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{touristRouteId}")]
+        [HttpPatch("{touristRouteId}", Name = "PartiallyUpdateTouristRoute")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PartiallyUpdateTouristRoute(
@@ -184,7 +233,7 @@ namespace FakeXieCheng.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{touristRouteId}")]
+        [HttpDelete("{touristRouteId}", Name = "DeleteTouristRoute")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTouristRoute([FromRoute] Guid touristRouteId)

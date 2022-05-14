@@ -23,7 +23,7 @@ namespace FakeXieCheng.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetPictureListForTouristRoute")]
         public async Task<IActionResult> GetPictureListForTouristRoute(Guid touristRouteId)
         {
             if (!await _touristRouteRepository.TouristRouteExistsAsync(touristRouteId)) return NotFound("旅游路线不存在");
@@ -42,7 +42,7 @@ namespace FakeXieCheng.API.Controllers
             return Ok(_mapper.Map<TouristRoutePictureDto>(pictureFromRepo));
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateTouristPicture")]
         public async Task<IActionResult> CreateTouristPicture([FromRoute] Guid touristRouteId,
             [FromBody] TouristRoutePictureForCreationDto touristRoutePictureForCreationDto)
         {
