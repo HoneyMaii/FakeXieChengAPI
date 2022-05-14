@@ -49,6 +49,7 @@ namespace FakeXieCheng.API.Controllers
             {
                 ResourceUriType.PreviousPage => _urlHelper.Link("GetTouristRoutes", new
                 {
+                    fields=parameters.Fields,
                     orderBy = parameters.OrderBy,
                     keyword = parameters.Keyword,
                     rating = parameters.Rating,
@@ -57,14 +58,17 @@ namespace FakeXieCheng.API.Controllers
                 }),
                 ResourceUriType.NextPage => _urlHelper.Link("GetTouristRoutes", new
                 {
+                    fields=parameters.Fields,
                     orderBy = parameters.OrderBy,
                     keyword = parameters.Keyword,
                     rating = parameters.Rating,
                     pageNumber = pageParameters.PageNumber + 1,
                     pageSize = pageParameters.PageSize
                 }),
+                // 默认页
                 _ => _urlHelper.Link("GetTouristRoutes", new
                 {
+                    fields=parameters.Fields,
                     orderBy = parameters.OrderBy,
                     keyword = parameters.Keyword,
                     rating = parameters.Rating,
@@ -113,7 +117,7 @@ namespace FakeXieCheng.API.Controllers
             };
             Response.Headers.Add("x-pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
 
-            return Ok(touristRoutesDto);
+            return Ok(touristRoutesDto.ShapeData(parameters.Fields));
         }
 
         // api/touristRoutes/{touristRouteId}
