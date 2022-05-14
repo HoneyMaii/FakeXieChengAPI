@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FakeXieCheng.API.Dtos;
 using FakeXieCheng.Models;
 
@@ -58,6 +59,23 @@ namespace FakeXieCheng.API.Services
                 var indexOfFirstSpace = trimmedField.IndexOf(" ", StringComparison.Ordinal);
                 var propertyName = indexOfFirstSpace == -1 ? trimmedField : trimmedField.Remove(indexOfFirstSpace);
                 if (!propertyMapping.ContainsKey(propertyName)) return false;
+            }
+
+            return true;
+        }
+
+        public bool IsPropertiesExists<T>(string fields)
+        {
+            if (string.IsNullOrWhiteSpace(fields)) return true;
+            // 逗号分隔字段字符串
+            var fieldAfterSplit = fields.Split(',');
+            foreach (var field in fieldAfterSplit)
+            {
+                var propertyName = field.Trim();
+                var propertyInfo = typeof(T)
+                    .GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+                //  如果 T 中没找到对应的属性
+                if (propertyInfo == null) return false;
             }
 
             return true;

@@ -49,7 +49,7 @@ namespace FakeXieCheng.API.Controllers
             {
                 ResourceUriType.PreviousPage => _urlHelper.Link("GetTouristRoutes", new
                 {
-                    fields=parameters.Fields,
+                    fields = parameters.Fields,
                     orderBy = parameters.OrderBy,
                     keyword = parameters.Keyword,
                     rating = parameters.Rating,
@@ -58,7 +58,7 @@ namespace FakeXieCheng.API.Controllers
                 }),
                 ResourceUriType.NextPage => _urlHelper.Link("GetTouristRoutes", new
                 {
-                    fields=parameters.Fields,
+                    fields = parameters.Fields,
                     orderBy = parameters.OrderBy,
                     keyword = parameters.Keyword,
                     rating = parameters.Rating,
@@ -68,7 +68,7 @@ namespace FakeXieCheng.API.Controllers
                 // 默认页
                 _ => _urlHelper.Link("GetTouristRoutes", new
                 {
-                    fields=parameters.Fields,
+                    fields = parameters.Fields,
                     orderBy = parameters.OrderBy,
                     keyword = parameters.Keyword,
                     rating = parameters.Rating,
@@ -85,6 +85,8 @@ namespace FakeXieCheng.API.Controllers
         {
             if (!_propertyMappingService.IsMappingExists<TouristRouteDto, TouristRoute>(parameters.OrderBy))
                 return BadRequest("请输入正确的排序参数");
+            if (!_propertyMappingService.IsPropertiesExists<TouristRoute>(parameters.Fields))
+                return BadRequest("请输入正确的塑形参数");
             var touristRoutesFromRepo = await _touristRouteRepository.GetTouristRoutesAsync(
                 parameters.Keyword,
                 parameters.RatingOperator,
@@ -123,12 +125,14 @@ namespace FakeXieCheng.API.Controllers
         // api/touristRoutes/{touristRouteId}
         [HttpGet("{touristRouteId:Guid}", Name = "GetTouristRouteById")]
         [HttpHead]
-        public async Task<IActionResult> GetTouristRouteById(Guid touristRouteId)
+        public async Task<IActionResult> GetTouristRouteById(Guid touristRouteId, string fields)
         {
+            if (!_propertyMappingService.IsPropertiesExists<TouristRoute>(fields))
+                return BadRequest("请输入正确的塑形参数");
             var touristRouteFromRepo = await _touristRouteRepository.GetTouristRouteAsync(touristRouteId);
             if (touristRouteFromRepo == null) return NotFound($"旅游路线 {touristRouteId} 不存在");
             var touristRouteDto = _mapper.Map<TouristRouteDto>(touristRouteFromRepo);
-            return Ok(touristRouteDto);
+            return Ok(touristRouteDto.ShapeData(fields));
         }
 
         [HttpPost]

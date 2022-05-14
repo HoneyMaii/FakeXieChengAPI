@@ -5,6 +5,7 @@ using System.Reflection;
 
 namespace FakeXieCheng.API.Helper
 {
+    // 集合数据塑形帮助类
     public static class IEnumerableExtensions
     {
         public static IEnumerable<ExpandoObject> ShapeData<TSource>(
