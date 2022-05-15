@@ -20,6 +20,20 @@ namespace FakeXieCheng.API.Models
         public string TransactionMetadata { get; set; }
         private StateMachine<OrderStateEnum, OrderStateTriggerEnum> _machine;
 
+        public void PaymentProcessing()
+        {
+            _machine.Fire(OrderStateTriggerEnum.PlaceOrder);
+        }
+
+        public void PaymentApprove()
+        {
+            _machine.Fire(OrderStateTriggerEnum.Approve);
+        }
+
+        public void PaymentReject()
+        {
+            _machine.Fire(OrderStateTriggerEnum.Reject);
+        }
         private void StateMachineInit()
         {
             // 订单初始状态
