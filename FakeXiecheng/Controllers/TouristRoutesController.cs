@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeXieCheng.API.Dtos;
@@ -118,8 +119,43 @@ namespace FakeXieCheng.API.Controllers
                 totalPages = touristRoutesFromRepo.TotalPages
             };
             Response.Headers.Add("x-pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
+            var shapedDtoList = touristRoutesDto.ShapeData(parameters.Fields);
+            var linkDto = CreateLinksForTouristRouteList(parameters, pageParameters);
+            // 函数式写法
+            var shapedDtoWithLinkList = shapedDtoList.Select(t =>
+            {
+                var touristRouteDictionary = t as IDictionary<string, object>;
+                var links = CreateLinkForTouristRoute((Guid) touristRouteDictionary["Id"], null);
+                touristRouteDictionary.Add("links", links);
+                return touristRouteDictionary;
+            });
+            var result = new
+            {
+                value = shapedDtoWithLinkList,
+                links = linkDto
+            };
+            return Ok(result);
+        }
 
-            return Ok(touristRoutesDto.ShapeData(parameters.Fields));
+        // 列表资源使用 HATEOAS 
+        private IEnumerable<LinkDto> CreateLinksForTouristRouteList(TouristRouteParameters parameters,
+            PaginationResourceParameters pageParameters)
+        {
+            var links = new List<LinkDto>();
+            // 添加 self 自我链接
+            links.Add(new LinkDto(
+                GenerateTouristRouteResourceUrl(parameters, pageParameters, ResourceUriType.CurrentPage),
+                "self",
+                "GET"
+            ));
+            // api/touristRoutes
+            // 添加和创建旅游路线
+            links.Add(new LinkDto(
+                Url.Link("CreateTouristRoute", null),
+                "create_tourist_route",
+                "POST"
+            ));
+            return links;
         }
 
         // 创建 HATEOAS link 链接
@@ -185,7 +221,7 @@ namespace FakeXieCheng.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateTouristRoute")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateTouristRoute([FromBody] TouristRouteForCreationDto touristRouteForCreationDto)
