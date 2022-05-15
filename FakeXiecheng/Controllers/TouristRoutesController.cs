@@ -122,6 +122,7 @@ namespace FakeXieCheng.API.Controllers
             return Ok(touristRoutesDto.ShapeData(parameters.Fields));
         }
 
+        // 创建 HATEOAS link 链接
         private IEnumerable<LinkDto> CreateLinkForTouristRoute(
             Guid touristRouteId,
             string fields
@@ -179,8 +180,8 @@ namespace FakeXieCheng.API.Controllers
             // return Ok(touristRouteDto.ShapeData(fields));
             var linkDtos = CreateLinkForTouristRoute(touristRouteId, fields);
             var result = touristRouteDto.ShapeData(fields)
-                as IDictionary<string,object>;
-            result.Add("links",linkDtos);
+                as IDictionary<string, object>;
+            result.Add("links", linkDtos);
             return Ok(result);
         }
 
@@ -193,8 +194,13 @@ namespace FakeXieCheng.API.Controllers
             _touristRouteRepository.AddTouristRoute(touristRouteModel);
             _touristRouteRepository.SaveAsync();
             var touristRouteToReturn = _mapper.Map<TouristRouteDto>(touristRouteModel);
-            return CreatedAtRoute("GetTouristRouteById", new {touristRouteId = touristRouteToReturn.Id},
-                touristRouteToReturn);
+            var links = CreateLinkForTouristRoute(touristRouteModel.Id, null);
+            var result = touristRouteToReturn.ShapeData(null) as IDictionary<string, object>;
+            result.Add("links", links);
+            return CreatedAtRoute("GetTouristRouteById",
+                new {touristRouteId = touristRouteToReturn.Id},
+                result
+            );
         }
 
         [HttpPut("{touristRouteId}", Name = "UpdateTouristRoute")]
