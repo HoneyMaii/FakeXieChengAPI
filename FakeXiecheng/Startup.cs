@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using FakeXieCheng.API.Database;
 using FakeXieCheng.API.Models;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -113,6 +115,16 @@ namespace FakeXieCheng.API
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();
+
+            // 添加自定义媒体类型格式处理器
+            services.Configure<MvcOptions>(config =>
+            {
+                var outputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
+                if (outputFormatter != null)
+                {
+                    outputFormatter.SupportedMediaTypes.Add("application/vnd.eddy.hateoas+json");
+                }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
