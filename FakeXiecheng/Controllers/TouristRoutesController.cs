@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Net.Http.Headers;
 
 namespace FakeXieCheng.API.Controllers
 {
@@ -79,11 +80,19 @@ namespace FakeXieCheng.API.Controllers
             };
         }
 
+        // api/touristRoutes?keyword=传入参数
+        // 1. 请求头部中请求类型：application/json -> 旅游路线资源
+        // 2. 请求头部中请求类型：application/vnd.aleks.hateoas + json 
         [HttpGet(Name = "GetTouristRoutes")]
         [HttpHead]
-        public async Task<IActionResult> GetTouristRoutes([FromQuery] TouristRouteParameters parameters,
-            [FromQuery] PaginationResourceParameters pageParameters)
+        public async Task<IActionResult> GetTouristRoutes(
+            [FromQuery] TouristRouteParameters parameters,
+            [FromQuery] PaginationResourceParameters pageParameters,
+            [FromHeader(Name = "Accept")] string mediaType
+        )
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+                return BadRequest();
             if (!_propertyMappingService.IsMappingExists<TouristRouteDto, TouristRoute>(parameters.OrderBy))
                 return BadRequest("请输入正确的排序参数");
             if (!_propertyMappingService.IsPropertiesExists<TouristRoute>(parameters.Fields))
@@ -120,21 +129,27 @@ namespace FakeXieCheng.API.Controllers
             };
             Response.Headers.Add("x-pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetadata));
             var shapedDtoList = touristRoutesDto.ShapeData(parameters.Fields);
-            var linkDto = CreateLinksForTouristRouteList(parameters, pageParameters);
-            // 函数式写法
-            var shapedDtoWithLinkList = shapedDtoList.Select(t =>
+            if (parsedMediaType.MediaType == "application/vnd.eddy.hateoas+json")
             {
-                var touristRouteDictionary = t as IDictionary<string, object>;
-                var links = CreateLinkForTouristRoute((Guid) touristRouteDictionary["Id"], null);
-                touristRouteDictionary.Add("links", links);
-                return touristRouteDictionary;
-            });
-            var result = new
-            {
-                value = shapedDtoWithLinkList,
-                links = linkDto
-            };
-            return Ok(result);
+                var linkDto = CreateLinksForTouristRouteList(parameters, pageParameters);
+                // 函数式写法
+                var shapedDtoWithLinkList = shapedDtoList.Select(t =>
+                {
+                    var touristRouteDictionary = t as IDictionary<string, object>;
+                    var links = CreateLinkForTouristRoute((Guid) touristRouteDictionary["Id"], null);
+                    touristRouteDictionary.Add("links", links);
+                    return touristRouteDictionary;
+                });
+                var result = new
+                {
+                    value = shapedDtoWithLinkList,
+                    links = linkDto
+                };
+                return Ok(result);
+            }
+
+            return Ok(shapedDtoList);
+
         }
 
         // 列表资源使用 HATEOAS 
