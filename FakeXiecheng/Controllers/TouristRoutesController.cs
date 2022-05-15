@@ -19,6 +19,12 @@ namespace FakeXieCheng.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Produces(
+    //     "application/json",
+    //     "application/vnd.eddy.hateoas+json",
+    //     "application/vnd.eddy.touristRoute.simplify+json",
+    //     "application/vnd.eddy.touristRoute.simplify.hateoas+json"
+    // )]
     public class TouristRoutesController : ControllerBase
     {
         private ITouristRouteRepository _touristRouteRepository;
@@ -83,6 +89,9 @@ namespace FakeXieCheng.API.Controllers
         // api/touristRoutes?keyword=传入参数
         // 1. 请求头部中请求类型：application/json -> 旅游路线资源
         // 2. 请求头部中请求类型：application/vnd.aleks.hateoas + json 
+        // 3. application/vnd.aleks.touristRoute.simplify+json -> 输出简化版资源数据
+        // 4. application/vnd.aleks.touristRoute.simplify.hateoas+json -> 输出简化版hateoas超媒体资源数据
+        
         [HttpGet(Name = "GetTouristRoutes")]
         [HttpHead]
         public async Task<IActionResult> GetTouristRoutes(
