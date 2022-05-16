@@ -61,7 +61,7 @@ namespace FakeXieCheng.API.Controllers
             return Ok(_mapper.Map<OrderDto>(order));
         }
 
-        [HttpPost("{orderId/placeOrder}")]
+        [HttpPost("{orderId}/placeOrder")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> PlaceOrder([FromRoute] Guid orderId)
         {

@@ -248,11 +248,11 @@ namespace FakeXieCheng.API.Controllers
         [HttpPost(Name = "CreateTouristRoute")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateTouristRoute([FromBody] TouristRouteForCreationDto touristRouteForCreationDto)
+        public async Task<IActionResult> CreateTouristRoute([FromBody] TouristRouteForCreationDto touristRouteForCreationDto)
         {
             var touristRouteModel = _mapper.Map<TouristRoute>(touristRouteForCreationDto);
             _touristRouteRepository.AddTouristRoute(touristRouteModel);
-            _touristRouteRepository.SaveAsync();
+            await _touristRouteRepository.SaveAsync();
             var touristRouteToReturn = _mapper.Map<TouristRouteDto>(touristRouteModel);
             var links = CreateLinkForTouristRoute(touristRouteModel.Id, null);
             var result = touristRouteToReturn.ShapeData(null) as IDictionary<string, object>;
