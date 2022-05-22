@@ -125,6 +125,9 @@ namespace FakeXieCheng.API
                     outputFormatter.SupportedMediaTypes.Add("application/vnd.eddy.hateoas+json");
                 }
             });
+            
+            // 添加分布式缓存（用于保存幂等键的值和响应数据）
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FakeXieCheng.API.Dtos;
+using FakeXieCheng.API.Filters;
 using FakeXieCheng.API.Helper;
 using FakeXieCheng.API.ResourceParameters;
 using FakeXieCheng.API.Services;
@@ -248,6 +249,7 @@ namespace FakeXieCheng.API.Controllers
         [HttpPost(Name = "CreateTouristRoute")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [Authorize(Roles = "Admin")]
+        [Idempotent]
         public async Task<IActionResult> CreateTouristRoute([FromBody] TouristRouteForCreationDto touristRouteForCreationDto)
         {
             var touristRouteModel = _mapper.Map<TouristRoute>(touristRouteForCreationDto);
