@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Text;
+using Autofac;
+using Autofac.Extras.DynamicProxy;
 using FakeXieCheng.API.Database;
 using FakeXieCheng.API.Models;
 using FakeXieCheng.API.Services;
@@ -125,9 +127,34 @@ namespace FakeXieCheng.API
                     outputFormatter.SupportedMediaTypes.Add("application/vnd.eddy.hateoas+json");
                 }
             });
-            
+
             // 添加分布式缓存（用于保存幂等键的值和响应数据）
             services.AddDistributedMemoryCache();
+        }
+
+        // for AutoFac
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // builder.RegisterType<MyService>().As<IMyService>();
+
+            #region 命名注册
+            // builder.RegisterType<MyServiceV2>().Named<IMyservice>("service2");
+            #endregion
+
+            #region 属性注册
+            // builder.RegisterType<MyServiceV2>().As<IMyService>().PropertiesAutowired();
+            #endregion
+
+            #region AOP
+            // builder.RegisterType<MyInterceptor>();
+            // builder.RegisterType<MyNameService>();
+            // builder.RegisterType<MyServiceV2>().As<IMyService>().PropertiesAutowired()
+            //     .InterceptedBy(typeof(MyInterceptor));
+            #endregion
+
+            #region 子容器
+            // builder.RegisterType<MyNameService>().InstancePerMatchingLifetimeScope("myscope"); // 把服务注入到特定名字的子容器中
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
