@@ -1316,6 +1316,15 @@
           }
         }
       },
+      "Snowflake.Core/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Snowflake.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Snowflake.Core.dll": {}
+        }
+      },
       "stateless/5.11.0": {
         "type": "package",
         "compile": {
@@ -5031,6 +5040,18 @@
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.nuspec",
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
+      ]
+    },
+    "Snowflake.Core/2.0.0": {
+      "sha512": "YB4SqYbTgG6UvwFHFZOWny/pE415KNjRbbiGwfPOUDWUCEjYLB9P11EiIHQ7y6LlkjejVAAIi8Wt3WM7Ys9qyw==",
+      "type": "package",
+      "path": "snowflake.core/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Snowflake.Core.dll",
+        "snowflake.core.2.0.0.nupkg.sha512",
+        "snowflake.core.nuspec"
       ]
     },
     "stateless/5.11.0": {
@@ -9514,6 +9535,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.15",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
       "Pomelo.EntityFrameworkCore.MySql >= 5.0.4",
+      "Snowflake.Core >= 2.0.0",
       "System.Linq.Dynamic.Core >= 1.2.18",
       "stateless >= 5.11.0"
     ]
@@ -9604,6 +9626,10 @@
           "Pomelo.EntityFrameworkCore.MySql": {
             "target": "Package",
             "version": "[5.0.4, )"
+          },
+          "Snowflake.Core": {
+            "target": "Package",
+            "version": "[2.0.0, )"
           },
           "System.Linq.Dynamic.Core": {
             "target": "Package",

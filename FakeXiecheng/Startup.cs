@@ -110,7 +110,7 @@ namespace FakeXieCheng.API
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
 
-            // 扫描 profile 文件
+            // 扫描 AutoMapper 的 profile 文件
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // UrlHelper 组件
@@ -121,7 +121,7 @@ namespace FakeXieCheng.API
             // 添加自定义媒体类型格式处理器
             services.Configure<MvcOptions>(config =>
             {
-                var outputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
+                var outputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>().FirstOrDefault();
                 if (outputFormatter != null)
                 {
                     outputFormatter.SupportedMediaTypes.Add("application/vnd.eddy.hateoas+json");

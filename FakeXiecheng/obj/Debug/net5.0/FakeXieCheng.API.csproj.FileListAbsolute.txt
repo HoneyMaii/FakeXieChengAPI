@@ -216,3 +216,8 @@
 /Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/runtimes/win-arm64/lib/net5.0/dotnet-aspnet-codegenerator-design.exe
 /Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/stateless.dll
 /Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/System.Linq.Dynamic.Core.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Autofac.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Autofac.Extensions.DependencyInjection.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Autofac.Extras.DynamicProxy.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Castle.Core.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Snowflake.Core.dll
