@@ -221,3 +221,15 @@
 /Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Autofac.Extras.DynamicProxy.dll
 /Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Castle.Core.dll
 /Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Snowflake.Core.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/obj/Debug/net5.0/staticwebassets/FakeXieCheng.API.StaticWebAssets.Pack.cache
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/obj/Debug/net5.0/staticwebassets/msbuild.FakeXieCheng.API.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/obj/Debug/net5.0/staticwebassets/msbuild.build.FakeXieCheng.API.props
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/obj/Debug/net5.0/staticwebassets/msbuild.buildMultiTargeting.FakeXieCheng.API.props
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/obj/Debug/net5.0/staticwebassets/msbuild.buildTransitive.FakeXieCheng.API.props
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Microsoft.OpenApi.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Swashbuckle.AspNetCore.Newtonsoft.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/obj/Debug/net5.0/FakeXieCheng.API.MvcApplicationPartsAssemblyInfo.cs
+/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/bin/Debug/net5.0/FakeXieCheng.API.xml

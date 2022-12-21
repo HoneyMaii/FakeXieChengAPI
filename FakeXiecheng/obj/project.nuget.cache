@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "0G1U56yfgHYhv77UJ10bLabVo1LvdLcxTZWxVxNzUrOA3DydFbcSDeYGfjeqk0+ASDHvTSKKVETkr5b6w6/OyA==",
+  "dgSpecHash": "3ttyht6uBx91PHezR/ULN2o8twEI6BwgjjHdFkLPs+YC7cCXx4J5SWSsj8atqQZ7W87JIx6dM/wwmzzdPDgCAw==",
   "success": true,
   "projectFilePath": "/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/FakeXieCheng.API.csproj",
   "expectedPackageFiles": [
@@ -38,6 +38,7 @@
     "/Users/edwardchu/.nuget/packages/microsoft.entityframeworkcore.relational/5.0.15/microsoft.entityframeworkcore.relational.5.0.15.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.entityframeworkcore.sqlserver/5.0.15/microsoft.entityframeworkcore.sqlserver.5.0.15.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.entityframeworkcore.tools/5.0.15/microsoft.entityframeworkcore.tools.5.0.15.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.extensions.caching.abstractions/5.0.0/microsoft.extensions.caching.abstractions.5.0.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.extensions.caching.memory/5.0.0/microsoft.extensions.caching.memory.5.0.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.extensions.configuration.abstractions/5.0.0/microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
@@ -57,6 +58,7 @@
     "/Users/edwardchu/.nuget/packages/microsoft.identitymodel.tokens/6.7.1/microsoft.identitymodel.tokens.6.7.1.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.netcore.platforms/3.1.0/microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.netcore.targets/1.1.3/microsoft.netcore.targets.1.1.3.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.visualstudio.web.codegeneration/5.0.2/microsoft.visualstudio.web.codegeneration.5.0.2.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.visualstudio.web.codegeneration.contracts/5.0.2/microsoft.visualstudio.web.codegeneration.contracts.5.0.2.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.visualstudio.web.codegeneration.core/5.0.2/microsoft.visualstudio.web.codegeneration.core.5.0.2.nupkg.sha512",
@@ -91,6 +93,11 @@
     "/Users/edwardchu/.nuget/packages/runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0/runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/snowflake.core/2.0.0/snowflake.core.2.0.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/stateless/5.11.0/stateless.5.11.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/swashbuckle.aspnetcore.newtonsoft/6.4.0/swashbuckle.aspnetcore.newtonsoft.6.4.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.4.0/swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.appcontext/4.3.0/system.appcontext.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.buffers/4.3.0/system.buffers.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.collections/4.3.0/system.collections.4.3.0.nupkg.sha512",
@@ -182,7 +189,10 @@
     "/Users/edwardchu/.nuget/packages/system.xml.readerwriter/4.3.0/system.xml.readerwriter.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.xml.xdocument/4.3.0/system.xml.xdocument.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.xml.xmldocument/4.3.0/system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/system.xml.xmlserializer/4.3.0/system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "/Users/edwardchu/.nuget/packages/system.xml.xmlserializer/4.3.0/system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.netcore.app.ref/5.0.0/microsoft.netcore.app.ref.5.0.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.app.ref/5.0.0/microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.netcore.app.host.osx-x64/5.0.17/microsoft.netcore.app.host.osx-x64.5.0.17.nupkg.sha512"
   ],
   "logs": []
 }

@@ -93,8 +93,14 @@ namespace FakeXieCheng.API.Controllers
         // 3. application/vnd.aleks.touristRoute.simplify+json -> 输出简化版资源数据
         // 4. application/vnd.aleks.touristRoute.simplify.hateoas+json -> 输出简化版hateoas超媒体资源数据
         
+        /// <summary>
+        /// Return a list of TouristsRoutes by query parameters
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="pageParameters"></param>
+        /// <param name="mediaType"></param>
+        /// <returns></returns>
         [HttpGet(Name = "GetTouristRoutes")]
-        [HttpHead]
         public async Task<IActionResult> GetTouristRoutes(
             [FromQuery] TouristRouteParameters parameters,
             [FromQuery] PaginationResourceParameters pageParameters,
@@ -230,7 +236,6 @@ namespace FakeXieCheng.API.Controllers
 
         // api/touristRoutes/{touristRouteId}
         [HttpGet("{touristRouteId:Guid}", Name = "GetTouristRouteById")]
-        [HttpHead]
         public async Task<IActionResult> GetTouristRouteById(Guid touristRouteId, string fields)
         {
             if (!_propertyMappingService.IsPropertiesExists<TouristRoute>(fields))

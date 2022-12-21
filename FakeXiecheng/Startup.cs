@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
@@ -19,7 +21,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FakeXieCheng.API
 {
@@ -86,7 +90,18 @@ namespace FakeXieCheng.API
                     };
                 }) // 控制API controller 行为的服务：非法模型状态响应工厂
                 ;
+            services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo() {Title = "FakeXieChengAPI", Version = "v1"});
 
+                    // 生成 xml 文件 drive the swagger docs
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    
+                    c.IncludeXmlComments(xmlPath);
+                    c.CustomOperationIds(description => description.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null); // 生成自定义 operationId
+                })
+                .AddSwaggerGenNewtonsoftSupport(); // swagger 添加 jsonPatch 支持
             // 每次发起请求时创建全新的数据仓库，请求结束时自动注销仓库
             // 不同请求之间的数据仓库完全独立，互不影响
             services.AddTransient<ITouristRouteRepository, TouristRouteRepository>();
@@ -138,22 +153,30 @@ namespace FakeXieCheng.API
             // builder.RegisterType<MyService>().As<IMyService>();
 
             #region 命名注册
+
             // builder.RegisterType<MyServiceV2>().Named<IMyservice>("service2");
+
             #endregion
 
             #region 属性注册
+
             // builder.RegisterType<MyServiceV2>().As<IMyService>().PropertiesAutowired();
+
             #endregion
 
             #region AOP
+
             // builder.RegisterType<MyInterceptor>();
             // builder.RegisterType<MyNameService>();
             // builder.RegisterType<MyServiceV2>().As<IMyService>().PropertiesAutowired()
             //     .InterceptedBy(typeof(MyInterceptor));
+
             #endregion
 
             #region 子容器
+
             // builder.RegisterType<MyNameService>().InstancePerMatchingLifetimeScope("myscope"); // 把服务注入到特定名字的子容器中
+
             #endregion
         }
 
@@ -163,6 +186,12 @@ namespace FakeXieCheng.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "FakeXieCheng V1");
+                    c.DisplayOperationId(); // 所有 operationId 显示在 swagger 中
+                });
             }
 
             // 你在哪
