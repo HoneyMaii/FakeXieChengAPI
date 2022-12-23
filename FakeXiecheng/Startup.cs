@@ -117,11 +117,13 @@ namespace FakeXieCheng.API
              *  事务结束后系统自动注销仓库
              */
             //services.AddScoped
+            
+            
             services.AddDbContext<AppDbContext>(options =>
             {
                 // options.UseSqlServer("server=localhost; Database=FakeXieChengDb; User Id=sa; Password=masterQu;");
                 // options.UseSqlServer(Configuration["DbContext:ConnectionString"]);
-                var connectionString = Configuration["DbContext:MySQLConnectionString"];
+                var connectionString = Configuration["DbContext:MySQLConnectionString"]!;
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
 

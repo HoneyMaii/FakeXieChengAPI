@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using FakeXieCheng.API.Models;
@@ -26,29 +27,25 @@ namespace FakeXieCheng.API.Database
         // 可以创建自定义映射关系
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.Entity<TouristRoute>().HasData(new TouristRoute
-            // {
-            //   Id = Guid.NewGuid(),
-            //   Title = "ceshititle",
-            //   Description = "shuoming",
-            //   CreateTime = DateTime.UtcNow
-            // });
-            // 使用 C# 的反射机制获取当前程序执行目录
-            var touristRouteJsonData =
-                File.ReadAllText(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                 @"/Database/touristRoutesMockData.json");
-            IList<TouristRoute> touristRoutes =
-                JsonConvert.DeserializeObject<IList<TouristRoute>>(touristRouteJsonData);
-            if (touristRoutes != null) modelBuilder.Entity<TouristRoute>().HasData(touristRoutes);
+            /*
+             * 实体类型的所有配置提取到实现 IEntityTypeConfiguration<TEntity> 的单独类中。
+             */
+            #region [方式2--分组配置1]
 
-            var touristRoutePictureJsonData =
-                File.ReadAllText(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                 @"/Database/touristRoutePicturesMockData.json");
-            IList<TouristRoutePicture> touristPRoutePictures =
-                JsonConvert.DeserializeObject<IList<TouristRoutePicture>>(touristRoutePictureJsonData);
-            if (touristPRoutePictures != null)
-                modelBuilder.Entity<TouristRoutePicture>().HasData(touristPRoutePictures);
+            // new TouristRouteEntityTypeConfiguration().Configure(modelBuilder.Entity<TouristRoute>());
+            // new TouristRoutePictureEntityTypeConfiguration().Configure(modelBuilder.Entity<TouristRoutePicture>());
 
+            #endregion
+
+            /*
+             * 在给定程序集中应用实现 IEntityTypeConfiguration 的类型中指定的所有配置。
+             */
+            #region [方式2--分组配置2]
+            
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TouristRouteEntityTypeConfiguration).Assembly);
+
+            #endregion
+            
             // 初始化用户与角色的种子
             // 1 更新用户与角色的外键
             modelBuilder.Entity<ApplicationUser>(u =>
