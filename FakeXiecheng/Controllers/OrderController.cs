@@ -35,6 +35,7 @@ namespace FakeXieCheng.API.Controllers
             _touristRouteRepository = touristRouteRepository;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet(Name = "GetOrders")]
