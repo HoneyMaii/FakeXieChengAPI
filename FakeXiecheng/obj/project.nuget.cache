@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3ttyht6uBx91PHezR/ULN2o8twEI6BwgjjHdFkLPs+YC7cCXx4J5SWSsj8atqQZ7W87JIx6dM/wwmzzdPDgCAw==",
+  "dgSpecHash": "6qYEBSdJYo5ZNJBI76NQPcH1RYJ3M3S7JhbMJbi5j8ZH162x73dpj65+NZZ21skkTjdMWBHD+XXZDgqiivEJTQ==",
   "success": true,
   "projectFilePath": "/Users/edwardchu/Projects/FakeXieChengAPI/FakeXiecheng/FakeXieCheng.API.csproj",
   "expectedPackageFiles": [
@@ -16,8 +16,8 @@
     "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/5.0.15/microsoft.aspnetcore.cryptography.keyderivation.5.0.15.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.html.abstractions/2.2.0/microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/5.0.15/microsoft.aspnetcore.identity.entityframeworkcore.5.0.15.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.jsonpatch/6.0.4/microsoft.aspnetcore.jsonpatch.6.0.4.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/5.0.16/microsoft.aspnetcore.mvc.newtonsoftjson.5.0.16.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.jsonpatch/7.0.1/microsoft.aspnetcore.jsonpatch.7.0.1.nupkg.sha512",
+    "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/7.0.1/microsoft.aspnetcore.mvc.newtonsoftjson.7.0.1.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.razor/2.2.0/microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.razor.language/5.0.0/microsoft.aspnetcore.razor.language.5.0.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.razor.runtime/2.2.0/microsoft.aspnetcore.razor.runtime.2.2.0.nupkg.sha512",
@@ -189,10 +189,7 @@
     "/Users/edwardchu/.nuget/packages/system.xml.readerwriter/4.3.0/system.xml.readerwriter.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.xml.xdocument/4.3.0/system.xml.xdocument.4.3.0.nupkg.sha512",
     "/Users/edwardchu/.nuget/packages/system.xml.xmldocument/4.3.0/system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/system.xml.xmlserializer/4.3.0/system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/microsoft.netcore.app.ref/5.0.0/microsoft.netcore.app.ref.5.0.0.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/microsoft.aspnetcore.app.ref/5.0.0/microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
-    "/Users/edwardchu/.nuget/packages/microsoft.netcore.app.host.osx-x64/5.0.17/microsoft.netcore.app.host.osx-x64.5.0.17.nupkg.sha512"
+    "/Users/edwardchu/.nuget/packages/system.xml.xmlserializer/4.3.0/system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

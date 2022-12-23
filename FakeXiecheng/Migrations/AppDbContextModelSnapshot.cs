@@ -88,16 +88,16 @@ namespace FakeXieCheng.API.Migrations
                         {
                             Id = "90184155-dee0-40c9-bb1e-b5ed07afc04e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "98ed7ab7-2629-44a0-9e85-e2b2a7123d98",
+                            ConcurrencyStamp = "d2424642-41d3-43fe-ab75-f6b6db1adac9",
                             Email = "admin@fakexiecheng.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FAKEXIECHENG.COM",
                             NormalizedUserName = "ADMIN@FAKEXIECHENG.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBuE6Yxq5i6ufrQJtpsW7447u92NREehOXrU3B9I36NaYwzku6c03UNp5P4JF56a/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFO8uWfous7zEpDIK7RufNy8Ps0tfmsL1Vvi0aJ6jaVw6ZTozSIRXk9nM9RUpOn4qA==",
                             PhoneNumber = "123456",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "afe5fed0-3cd0-45ce-afe6-dd2408f57f64",
+                            SecurityStamp = "8c226af2-9724-4ddc-b13e-ad4a413191eb",
                             TwoFactorEnabled = false,
                             UserName = "admin@fakexiecheng.com"
                         });
@@ -231,7 +231,7 @@ namespace FakeXieCheng.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TouristRoutes");
+                    b.ToTable("TouristRoute2");
 
                     b.HasData(
                         new
@@ -503,7 +503,7 @@ namespace FakeXieCheng.API.Migrations
 
                     b.HasIndex("TouristRouteId");
 
-                    b.ToTable("TouristRoutePictures");
+                    b.ToTable("TouristRoutePicture2");
 
                     b.HasData(
                         new
@@ -1013,7 +1013,6 @@ namespace FakeXieCheng.API.Migrations
                         new
                         {
                             Id = "308660dc-ae51-480f-824d-7dca6714c3e2",
-                            ConcurrencyStamp = "b7b03c05-f128-4569-a531-f739ead8b58a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
